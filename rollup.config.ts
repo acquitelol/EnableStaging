@@ -20,27 +20,6 @@ export default defineConfig({
   plugins: [
     nodeResolve(),
     commonjs(),
-    esbuild({ minify: true, target: "ES2019" }),
-    createPluginJson(),
+    esbuild({ minify: true, target: "ES2019" })
   ],
 });
-
-function createPluginJson(options = {}): Plugin {
-  return {
-    name: "plugin-info",
-    writeBundle: (err) => {
-      const info = require("./package.json");
-      const data = {
-        name: pluginName,
-        description: info?.description ?? "No description was provided.",
-        author: info?.author?.name ?? "Unknown",
-        version: info?.version ?? "1.0.0",
-      };
-
-      writeFileSync(
-        `dist/${pluginName}.json`,
-        JSON.stringify(data, null, "\t")
-      );
-    },
-  };
-}
